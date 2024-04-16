@@ -1,0 +1,18 @@
+.v-bottom-navigation__content{
+  background-color: #1f1e31;
+}
+
+.navigation-container {
+  display: flex;          /* Usa Flexbox para alinhamento */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;     /* Centraliza verticalmente */
+}
+
+.bottom-nav {
+  width: 50% !important;             /* Define a largura como 80% do contêiner */
+  left: unset !important;
+  border-radius: 15px;
+}
+
+
+
