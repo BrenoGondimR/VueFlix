@@ -6,15 +6,12 @@
     </div>
 
     <div class="movie-info" v-if="movieDetails.title">
-      <!-- Title from fetched data -->
       <h1>{{ movieDetails.title }}</h1>
       <div class="movie-meta">
-        <!-- Release year, average rating, and duration/number of episodes from fetched data -->
         <span class="movie-year">{{ movieDetails.releaseYear }}</span>
         <span class="movie-rating">{{ movieDetails.voteAverage }}/10</span>
         <span class="movie-duration">{{ movieDetails.duration }}</span>
       </div>
-      <!-- Description from fetched data -->
       <p class="movie-description">{{ movieDetails.overview }}</p>
       <div class="movie-actions">
         <button class="btn-trailer">Trailer</button>
