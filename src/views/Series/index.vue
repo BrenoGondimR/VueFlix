@@ -8,8 +8,9 @@
         <movie-card
             :image-url="item.imageUrl"
             :title="item.originalTitle"
-            :release-date="item.releaseDate">
-        </movie-card>
+            :release-date="item.releaseDate"
+            @click.native="goToDetails(item.id, item.mediaType)"
+        ></movie-card>
       </div>
     </div>
   </div>
@@ -35,6 +36,9 @@ export default {
     this.fetchTrendingItems();
   },
   methods: {
+    goToDetails(id, mediaType) {
+      this.$router.push({ name: 'details', params: { id: id, mediaType: mediaType } });
+    },
     async fetchTrendingItems() {
       const timeWindow = 'week'; // or 'day'
       const accessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiN2I0MWQ2ZjIzNGNkZjg0YTI1ZjM3NzE3NzRiNTg5ZSIsInN1YiI6IjY2MWVhYWJkNmQ5ZmU4MDE3ZDYwNzRkNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DJmwB2TgtKxYLQCt0HLtsyqLnV060M5Epe0o_HY19hM'; // Replace with your TMDB API key
@@ -52,7 +56,7 @@ export default {
           releaseDate: item.release_date || item.first_air_date,
           voteAverage: item.vote_average,
           id: item.id,
-          imageUrl: `https://image.tmdb.org/t/p/w500${item.backdrop_path}`
+          imageUrl: `https://image.tmdb.org/t/p/w500${item.poster_path}`
         }));
       } catch (error) {
         console.error('Error fetching trending items:', error);

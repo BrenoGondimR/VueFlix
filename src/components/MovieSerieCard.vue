@@ -46,7 +46,7 @@ export default {
 
 <style scoped>
 .movie-card {
-  max-width: 300px;
+  max-width: 365px;
   border-radius: 20px;
   margin: auto;
   cursor: pointer;
@@ -64,7 +64,7 @@ export default {
 
 .movie-image {
   width: 100%;
-  height: 400px;
+  height: 530px;
   background-size: cover;
   background-position: center;
   display: block; /* Add this line if you decide to use img tag instead */
