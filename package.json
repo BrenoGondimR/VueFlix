@@ -8,8 +8,11 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "bootstrap-vue-3": "^0.5.1",
     "core-js": "^3.8.3",
+    "primeicons": "^7.0.0",
+    "primevue": "^3.51.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuetify": "^3.5.16"

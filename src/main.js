@@ -4,6 +4,9 @@ import router from './router'
 import BootstrapVue3 from 'bootstrap-vue-3'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+import 'primevue/resources/themes/aura-light-green/theme.css'
+import 'primeicons/primeicons.css'
+import PrimeVue from 'primevue/config';
 
 // Vuetify
 import 'vuetify/styles'
@@ -27,5 +30,5 @@ const vuetify = createVuetify({
 })
 
 
+createApp(App).use(router).use(vuetify).use(BootstrapVue3).use(PrimeVue).mount('#app')
 
-createApp(App).use(router).use(vuetify).use(BootstrapVue3).mount('#app')

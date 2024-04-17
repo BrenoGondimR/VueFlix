@@ -2,15 +2,24 @@
   <div class="movie-card">
     <div class="movie-image" :style="{ backgroundImage: 'url(' + imageUrl + ')' }"></div>
     <div class="movie-content">
-      <h3 class="movie-title">{{ title }}</h3>
-      <p class="movie-studio">{{ studio }}</p>
+      <div>
+        <h3 class="movie-title">{{ title }}</h3>
+        <p class="movie-studio">{{ formatDate(releaseDate) }}</p>
+        <Button class="button-favorite" icon="pi pi-heart" outlined></Button>
+      </div>
+      <div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Button from 'primevue/button'
 export default {
   name: 'MovieCard',
+  components: {
+    Button,
+  },
   props: {
     imageUrl: {
       type: String,
@@ -20,26 +29,26 @@ export default {
       type: String,
       required: true
     },
-    studio: {
-      type: String,
-      required: true
-    },
     releaseDate: {
       type: String,
       required: true
     },
-    averageRating: {
-      type: [String, Number],
-      required: true
-    }
+  },
+  methods: {
+    formatDate(dateString) {
+      // Assuming dateString is in YYYY-MM-DD format
+      const [year, month, day] = dateString.split('-');
+      return `${day}/${month}/${year}`; // Convert to DD/MM/YYYY format
+    },
   }
 }
 </script>
 
 <style scoped>
 .movie-card {
-  max-width: 245px;
+  max-width: 300px;
   border-radius: 20px;
+  margin: auto;
   cursor: pointer;
   overflow: hidden;
   position: relative;
@@ -50,7 +59,7 @@ export default {
 
 .movie-card:hover {
   transform: translateY(-5px); /* Move the card up slightly */
-  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.4); /* Increase the shadow size */
+  box-shadow: 0px 15px 20px rgba(108, 108, 108, 0.4); /* Increase the shadow size */
 }
 
 .movie-image {
@@ -58,16 +67,21 @@ export default {
   height: 400px;
   background-size: cover;
   background-position: center;
+  display: block; /* Add this line if you decide to use img tag instead */
+  object-fit: cover; /* Ensures that the image covers the area without losing aspect ratio */
 }
 
 .movie-content {
   position: absolute;
-  bottom: 0;
-  opacity: 50%;
+  display: flex;
+  justify-content: space-between;
+  opacity: 90%;
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.5);
-  width: 100%;
+  width: 95%;
   padding: 10px;
+  left: 8px;
+  bottom: 8px;
 }
 
 .movie-title {
@@ -78,6 +92,7 @@ export default {
 .movie-studio {
   font-size: 0.8rem;
   opacity: 0.7;
+  margin-bottom: 1px;
 }
 
 .movie-rating {
