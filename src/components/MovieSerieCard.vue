@@ -5,7 +5,7 @@
       <div>
         <h3 class="movie-title">{{ title }}</h3>
         <p class="movie-studio">{{ formatDate(releaseDate) }}</p>
-        <Button class="button-favorite" icon="pi pi-heart" outlined></Button>
+        <Button @click="toggleFavorite(contentType, id)" class="button-favorite" :icon="isFavorited ? 'pi pi-heart-fill' : 'pi pi-heart'" :class="{ 'favorited': isFavorited }" outlined></Button>
       </div>
       <div>
       </div>
@@ -33,12 +33,49 @@ export default {
       type: String,
       required: true
     },
+    contentType: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: Number,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isFavorited: false,
+    };
+  },
+  created() {
+    this.checkFavorite();
   },
   methods: {
+    checkFavorite() {
+      const storageKey = 'favorites';
+      const favorites = JSON.parse(localStorage.getItem(storageKey)) || [];
+      this.isFavorited = favorites.some(fav => fav.id === this.id && fav.mediaType === this.contentType);
+    },
     formatDate(dateString) {
       // Assuming dateString is in YYYY-MM-DD format
       const [year, month, day] = dateString.split('-');
       return `${day}/${month}/${year}`; // Convert to DD/MM/YYYY format
+    },
+    toggleFavorite(mediaType, id) {
+      const storageKey = 'favorites';
+      // Tenta buscar os favoritos existentes do localStorage ou começa com uma lista vazia
+      let favorites = JSON.parse(localStorage.getItem(storageKey)) || [];
+      const favoriteItem = { mediaType, id };
+
+      // Verifica se o item já está na lista de favoritos
+      const index = favorites.findIndex(fav => fav.id === id && fav.mediaType === mediaType);
+
+      if (index >= 0) {
+        favorites.splice(index, 1);
+      } else {
+        favorites.push(favoriteItem);
+      }
+      localStorage.setItem(storageKey, JSON.stringify(favorites));
     },
   }
 }
@@ -60,6 +97,14 @@ export default {
 .movie-card:hover {
   transform: translateY(-5px); /* Move the card up slightly */
   box-shadow: 0px 15px 20px rgba(108, 108, 108, 0.4); /* Increase the shadow size */
+}
+
+.button-favorite.favorited .p-button-icon {
+  color: red; /* Isso vai mudar a cor do ícone para vermelho */
+}
+
+.favorited{
+  color: red;
 }
 
 .movie-image {

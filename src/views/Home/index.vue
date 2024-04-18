@@ -7,14 +7,19 @@
           <img :src="featuredMovie.backdropUrl" alt="Movie Background" />
         </div>
         <div class="movie-info" v-if="featuredMovie.originalTitle">
-          <h1>{{ featuredMovie.originalTitle }}</h1>
+          <h1 style="color:#e52a5a">{{ featuredMovie.originalTitle }}</h1>
           <div class="movie-meta">
             <span class="movie-year">Popularity: {{ featuredMovie.popularity }}</span>
           </div>
           <p class="movie-description" :class="{ 'typing-complete': isTypingComplete }">{{ typingDescription }}</p>
           <div class="movie-actions">
-            <button class="btn-trailer">Trailer</button>
+            <button class="btn-trailer" @click="openModal">Trailer</button>
           </div>
+          <ModalVideo
+              :show-modal="showModal"
+              :video-link="trailerLink"
+              @close="showModal = false"
+          ></ModalVideo>
         </div>
       </div>
     </div>
@@ -26,9 +31,11 @@
       </div>
       <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in trendingItems" :key="item.id" style="margin-bottom: 35px;">
         <movie-card
+            :id="item.id"
             :image-url="item.imageUrl"
             :title="item.originalTitle"
             :release-date="item.releaseDate"
+            :content-type="item.mediaType"
             @click.native="goToDetails(item.id, item.mediaType)"
         ></movie-card>
       </div>
@@ -40,17 +47,22 @@
 
 import axios from 'axios';
 import MovieCard from "@/components/MovieSerieCard.vue";
+import ModalVideo from "@/components/ModalVideo.vue";
+
 
 export default {
   name: "home",
   components: {
-    MovieCard
+    MovieCard,
+    ModalVideo
 
   },
   data() {
     return {
       trendingItems: [],
       featuredMovie: {
+        id: '',
+        mediaType: '',
         backdropUrl: '',
         originalTitle: '',
         overview: '',
@@ -60,6 +72,8 @@ export default {
       typingDescription: '',
       typingSpeed: 20,
       isTypingComplete: false,
+      showModal: false,
+      trailerLink: '',
     };
   },
   mounted() {
@@ -69,6 +83,9 @@ export default {
     });
   },
   methods: {
+    openModal() {
+      this.showModal = true;
+    },
     goToDetails(id, mediaType) {
       this.$router.push({ name: 'details', params: { id: id, mediaType: mediaType } });
     },
@@ -112,12 +129,28 @@ export default {
             backdropUrl: `https://image.tmdb.org/t/p/original${mostRecentMovie.backdrop_path_url}`,
             originalTitle: mostRecentMovie.originalTitle,
             overview: mostRecentMovie.overview,
+            mediaType: mostRecentMovie.mediaType,
+            id: mostRecentMovie.id,
             releaseDate: mostRecentMovie.releaseDate,
             popularity: mostRecentMovie.popularity,
           };
         }
       } catch (error) {
         console.error('Error fetching trending items:', error);
+      }
+      const videosUrl = `https://api.themoviedb.org/3/movie/${this.featuredMovie.id}/videos`;
+      try {
+        const videoResponse = await axios.get(videosUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+        const trailer = videoResponse.data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+        if (trailer) {
+          this.trailerLink = `https://www.youtube.com/watch?v=${trailer.key}`;
+        }
+      } catch (error) {
+        console.error('Error fetching movie videos:', error);
       }
     }
   }
@@ -140,8 +173,9 @@ export default {
 .movie-background img {
   height: 60vh;
   width: 100%;
+  border-radius: 15px;
   object-fit: cover;
-  filter: blur(1px);
+  filter: blur(2px);
   opacity: 0.5;
 }
 
@@ -218,5 +252,17 @@ export default {
   max-width: 600px;
   margin-top: 1rem;
 }
+
+.home-header .movie-details::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 20%; /* Altura do fade-out */
+  background: linear-gradient(to bottom, transparent, #121124); /* Gradiente de transparente para a cor de fundo da página */
+  z-index: 1;
+}
+
 
 </style>

@@ -6,9 +6,11 @@
       </div>
       <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in trendingItems" :key="item.id" style="margin-bottom: 35px;">
         <movie-card
+            :id="item.id"
             :image-url="item.imageUrl"
             :title="item.originalTitle"
             :release-date="item.releaseDate"
+            :content-type="item.mediaType"
             @click.native="goToDetails(item.id, item.mediaType)"
         ></movie-card>
       </div>
