@@ -15,11 +15,6 @@
           <div class="movie-actions">
             <button class="btn-trailer" @click="openModal">Trailer</button>
           </div>
-          <ModalVideo
-              :show-modal="showModal"
-              :video-link="trailerLink"
-              @close="showModal = false"
-          ></ModalVideo>
         </div>
       </div>
     </div>
@@ -28,6 +23,11 @@
     <div class="row">
       <div class="col-lg-12" style="margin-bottom: 15px">
         <h3 class="trend-tops-title">Trending Tops</h3>
+        <ModalVideo
+            :show-modal="showModal"
+            :video-link="trailerLink"
+            @close="showModal = false"
+        ></ModalVideo>
       </div>
       <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in trendingItems" :key="item.id" style="margin-bottom: 35px;">
         <movie-card

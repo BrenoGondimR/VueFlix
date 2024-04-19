@@ -108,7 +108,7 @@ export default {
           id: data.id,
           mediaType: this.$route.params.mediaType,
           releaseYear: new Date(data.release_date).getFullYear().toString(),
-          voteAverage: data.vote_average,
+          voteAverage: Math.round(data.vote_average),
           duration: `${data.runtime} min`,
           overview: data.overview,
           tagline: data.tagline,
